@@ -3,7 +3,11 @@ import Handlebars from 'handlebars';
 import { input } from '../input/index.js';
 import { button } from '../button/index.js';
 
-const messageInput = input({ type: 'text', text: 'Введите сообщение' });
+const messageInput = input({
+	inputType: 'text',
+	name: 'message',
+	text: 'Введите сообщение',
+});
 const sendMessageButton = button({ text: 'Отправить' });
 
 const template = `

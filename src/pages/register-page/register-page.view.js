@@ -3,20 +3,24 @@ import { button, input, link } from '../../components/index.js';
 import './styles.css';
 import '../../utils/utils.css';
 
-const loginInput = input({ type: 'text', name: 'login', text: 'Логин' });
-const firstNameInput = input({ type: 'text', name: 'name', text: 'Имя' });
+const loginInput = input({ inputType: 'text', name: 'login', text: 'Логин' });
+const firstNameInput = input({
+	inputType: 'text',
+	name: 'first_name',
+	text: 'Имя',
+});
 const secondNameInput = input({
-	type: 'text',
-	name: 'secondName',
+	inputType: 'text',
+	name: 'second_name',
 	text: 'Фамилия',
 });
 const passwordInput = input({
-	type: 'password',
+	inputType: 'password',
 	name: 'password',
 	text: 'Логин',
 });
-const emailInput = input({ type: 'text', name: 'email', text: 'Email' });
-const phoneInput = input({ type: 'text', name: 'phone', text: 'Телефон' });
+const emailInput = input({ inputType: 'text', name: 'email', text: 'Email' });
+const phoneInput = input({ inputType: 'text', name: 'phone', text: 'Телефон' });
 const authButton = button({ text: 'Зарегистрироваться' });
 const authLink = link({ text: 'Уже есть аккаунт?', url: '/auth' });
 

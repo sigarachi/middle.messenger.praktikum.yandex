@@ -4,33 +4,50 @@ import Handlebars from 'handlebars';
 import { input } from '../input/index.js';
 import { button } from '../button/index.js';
 
-const loginInput = input({ type: 'text', name: 'login', value: 'Тестовый' });
-const secondNameInput = input({
-	type: 'text',
-	name: 'secondName',
+const avatarInput = input({ inputType: 'file', name: 'avatar' });
+const loginInput = input({
+	inputType: 'text',
+	name: 'login',
 	value: 'Тестовый',
 });
-const nameInput = input({ type: 'text', name: 'name', value: 'Тестовый' });
-const phoneInput = input({ type: 'text', name: 'phone', value: 'Тестовый' });
-const emailInput = input({ type: 'text', name: 'email', value: 'Тестовый' });
+const secondNameInput = input({
+	inputType: 'text',
+	name: 'second_name',
+	value: 'Тестовый',
+});
+const nameInput = input({
+	inputType: 'text',
+	name: 'first_name',
+	value: 'Тестовый',
+});
+const phoneInput = input({
+	inputType: 'text',
+	name: 'phone',
+	value: 'Тестовый',
+});
+const emailInput = input({
+	inputType: 'text',
+	name: 'email',
+	value: 'Тестовый',
+});
 const displayNameInput = input({
-	type: 'text',
-	name: 'displayName',
+	inputType: 'text',
+	name: 'display_name',
 	value: 'Тестовый',
 });
 
 const oldPasswordInput = input({
-	type: 'password',
-	name: 'password',
+	inputType: 'password',
+	name: 'oldPassword',
 	placeholder: 'Старый пароль',
 });
 const newPassword = input({
-	type: 'password',
+	inputType: 'password',
 	name: 'newPassword',
 	placeholder: 'Новый пароль',
 });
 const newPasswordAgain = input({
-	type: 'password',
+	inputType: 'password',
 	name: 'newPasswordAgain',
 	placeholder: 'Новый пароль еще раз',
 });
@@ -45,6 +62,12 @@ const template = `
             </p>
     </div>
     <div class="user-settings__wrapper">
+    	<form>
+    		<div class="user-info__wrapper">
+    			<h3>Аватар</h3>
+    			${avatarInput}
+			</div>
+		</form>
         <form>
             <div class="user-info__wrapper">
                 ${loginInput}

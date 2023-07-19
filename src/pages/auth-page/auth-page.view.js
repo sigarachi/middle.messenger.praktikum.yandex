@@ -3,8 +3,12 @@ import { button, input, link } from '../../components/index.js';
 import './styles.css';
 import '../../utils/utils.css';
 
-const loginInput = input({ type: 'text', text: 'Логин' });
-const passwordInput = input({ type: 'password', text: 'Пароль' });
+const loginInput = input({ inputType: 'text', name: 'login', text: 'Логин' });
+const passwordInput = input({
+	inputType: 'password',
+	name: 'password',
+	text: 'Пароль',
+});
 const authButton = button({ text: 'Авторизация' });
 const registerLink = link({ text: 'Нет аккаунта?', url: '/register' });
 
