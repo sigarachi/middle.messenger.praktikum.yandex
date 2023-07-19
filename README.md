@@ -1,5 +1,5 @@
 # Мессенджер
-Опробовать приложение можно тут: fantastic-sable-bd7daa.netlify.app  
+Опробовать приложение можно тут: https://deploy--fantastic-sable-bd7daa.netlify.app
 
 ## Команды для работы с проектом
 
