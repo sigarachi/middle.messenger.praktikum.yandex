@@ -23,6 +23,7 @@
     "handlebars": "^4.7.7",
     "netlify-lambda": "^2.0.16",
     "pug": "^3.0.2",
+    "pug-cli": "^1.0.0-alpha6",
     "serverless-http": "^3.2.0",
     "vite-plugin-handlebars": "^1.6.0"
   }
