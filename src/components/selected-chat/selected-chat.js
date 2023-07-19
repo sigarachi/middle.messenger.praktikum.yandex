@@ -14,10 +14,10 @@ const template = `
             </p>
         </div>
         <div class="chat_messages__wrapper"></div>
-        <div class="chat_input__wrapper">
+        <form class="chat_input__wrapper">
             ${messageInput}
             ${sendMessageButton}
-        </div>
+        </form>
   
 `;
 
