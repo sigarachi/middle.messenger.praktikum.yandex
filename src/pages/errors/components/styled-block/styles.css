@@ -1,4 +1,4 @@
-.full_size__wrapper {
+.full-size-wrapper {
     width: 100%;
     height: 100%;
     display: flex;
@@ -6,16 +6,16 @@
     justify-content: center;
 }
 
-.block__container {
+.block-container {
     text-align: center;
     width: fit-content;
     height: fit-content;
     padding: 154px 362px;
     border-radius: 8px;
-    background: rgba(60, 60, 60, 0.50);
+    background: rgb(60 60 60 / 50%);
 }
 
-.block__header {
+.block-header {
     color: #FFF;
     text-align: center;
     font-family: Montserrat, serif;
@@ -25,7 +25,7 @@
     line-height: normal;
 }
 
-.block__description {
+.block-description {
     color: #FFF;
     text-align: center;
     font-family: Montserrat, serif;
