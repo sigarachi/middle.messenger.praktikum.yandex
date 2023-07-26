@@ -1,4 +1,4 @@
-.search__wrapper {
+.search-wrapper {
     width: 100%;
     height: 100px;
     flex-shrink: 0;
@@ -12,7 +12,13 @@
     gap: 5px;
 }
 
-.user__wrapper  {
+.search-form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.user-wrapper  {
     width: 90%;
     display: flex;
     justify-content: flex-end;

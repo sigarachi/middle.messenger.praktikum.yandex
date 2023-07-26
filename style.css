@@ -6,3 +6,7 @@ body, #app {
   padding: 0;
   background: linear-gradient(180deg, #C8C4FE 0%, #6559F2 100%);
 }
+
+#app > div {
+  height: 100%;
+}
