@@ -20,6 +20,8 @@ const loginInput = new Input(
 		placeholder: 'Логин',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (validateField(event.target.value, userSettingsSchema.login))
 				console.error('Login validation error');
@@ -33,6 +35,8 @@ const firstNameInput = new Input(
 		placeholder: 'Имя',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (validateField(event.target.value, userSettingsSchema.first_name))
 				console.error('First name validation error');
@@ -46,6 +50,8 @@ const secondNameInput = new Input(
 		placeholder: 'Фамилия',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (validateField(event.target.value, userSettingsSchema.second_name))
 				console.error('Second name validation error');
@@ -59,6 +65,8 @@ const passwordInput = new Input(
 		placeholder: 'Логин',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (validateField(event.target.value, passwordSettingsSchema.password))
 				console.error('Password validation error');
@@ -72,6 +80,8 @@ const emailInput = new Input(
 		placeholder: 'Email',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (validateField(event.target.value, userSettingsSchema.email))
 				console.error('Email validation error');
@@ -85,6 +95,8 @@ const phoneInput = new Input(
 		placeholder: 'Телефон',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (validateField(event.target.value, userSettingsSchema.phone))
 				console.error('Phone validation error');
@@ -117,6 +129,8 @@ const registerForm = new Form(
 		className: 'form-wrapper',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		submit: (event) => {
 			const formData = new FormData(event.target);
 

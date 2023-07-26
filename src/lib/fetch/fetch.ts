@@ -64,7 +64,7 @@ export class Fetch {
 			// set query params
 			if (method === METHODS.GET && data) {
 				Object.entries(data).forEach(([param, value]) => {
-					urlObject.searchParams.set(param, value.toString());
+					urlObject.searchParams.set(param, value as string);
 				});
 			}
 
@@ -75,12 +75,14 @@ export class Fetch {
 
 			if (headers) {
 				Object.entries(headers).forEach(([header, value]) => {
-					value && xhr.setRequestHeader(header, value);
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					//@ts-ignore
+					xhr.setRequestHeader(header, value);
 				});
 			}
 
 			xhr.onload = () => {
-				resolve();
+				resolve('');
 			};
 
 			xhr.onabort = reject;

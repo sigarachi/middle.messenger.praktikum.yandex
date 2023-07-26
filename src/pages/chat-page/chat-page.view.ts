@@ -36,8 +36,12 @@ const chatPageContext = {
 	list,
 };
 
+interface ChatPageProps {
+	settingsOpen?: boolean;
+}
+
 export class ChatPage extends Block {
-	constructor(context, events = {}) {
+	constructor(context: ChatPageProps, events = {}) {
 		super('div', {
 			...context,
 			events,

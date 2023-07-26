@@ -29,6 +29,8 @@ const searchForm = new Form(
 		content: searchFormTemplate(searchFormContext),
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		submit: (event) => {
 			const formData = new FormData(event.target);
 
@@ -37,8 +39,12 @@ const searchForm = new Form(
 	}
 ).transformToString();
 
+interface ISearchProps {
+	user?: string;
+}
+
 export class Search extends Block {
-	constructor(context, events = {}) {
+	constructor(context: ISearchProps, events = {}) {
 		super('div', {
 			events,
 			template: searchTemplate({ ...context, searchForm: searchForm }),

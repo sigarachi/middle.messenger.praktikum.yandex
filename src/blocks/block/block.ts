@@ -1,13 +1,25 @@
 import { EventBus } from '../../lib';
 import Handlebars from 'handlebars';
 
-const isObject = (value) => {
+const isObject = (value: unknown) => {
 	return typeof value === 'object' && value !== null;
 };
 
 export type Dictionary = Record<string, any>;
 
-function cloneDeep(obj) {
+export type BlockProps = {
+	context?: Dictionary;
+	template?: string;
+	events: { [event: string]: any };
+} & Record<string, any>;
+
+export interface IMetaBlock {
+	tagName: string;
+	props: Dictionary;
+	className?: string;
+}
+
+function cloneDeep(obj: unknown) {
 	if (!isObject(obj)) {
 		return;
 	}
@@ -18,7 +30,9 @@ function cloneDeep(obj) {
 			return acc;
 		}, []);
 	} else {
-		return Object.entries(obj).reduce((acc, [key, value]) => {
+		return Object.entries(obj as object).reduce((acc, [key, value]) => {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore
 			acc[key] = isObject(value) ? cloneDeep(value) : value;
 			return acc;
 		}, {});
@@ -33,12 +47,14 @@ export class Block {
 		FLOW_RENDER: 'flow:render',
 	};
 
-	_element = null;
-	_meta = null;
-	private props: Dictionary;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
+	_element: HTMLElement;
+	_meta: IMetaBlock;
+	protected props: BlockProps;
 	private eventBus: () => EventBus;
-	private _elementId: string;
-	private _template: HandlebarsTemplateDelegate<any>;
+	private _elementId: string = '';
+	protected _template: HandlebarsTemplateDelegate<any>;
 
 	/** JSDoc
 	 * @param {string} tagName
@@ -46,7 +62,7 @@ export class Block {
 	 *
 	 * @returns {void}
 	 */
-	constructor(tagName = 'div', props: Dictionary = {}) {
+	constructor(tagName = 'div', props: BlockProps) {
 		const eventBus = new EventBus();
 		this._meta = {
 			tagName,
@@ -63,7 +79,7 @@ export class Block {
 		eventBus.emit(Block.EVENTS.INIT);
 	}
 
-	_registerEvents(eventBus) {
+	_registerEvents(eventBus: EventBus) {
 		eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
 		eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -80,17 +96,19 @@ export class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	_componentDidMount(oldProps) {
+	_componentDidMount(oldProps: BlockProps) {
 		this.componentDidMount(oldProps);
 	}
 
 	// Может переопределять пользователь, необязательно трогать
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	componentDidMount(oldProps) {}
+	componentDidMount(oldProps: BlockProps) {}
 
 	dispatchComponentDidMount() {}
 
-	_componentDidUpdate(oldProps, newProps) {
+	_componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
 		const response = this.componentDidUpdate(oldProps, newProps);
 
 		if (response) {
@@ -100,12 +118,14 @@ export class Block {
 		return response;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/ban-ts-comment
+	//@ts-ignore
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	componentDidUpdate(oldProps, newProps) {
+	componentDidUpdate(oldProps: BlockProps, newProps: BlockProps) {
 		return false;
 	}
 
-	setProps = (nextProps) => {
+	setProps = (nextProps: BlockProps) => {
 		if (!nextProps) {
 			return;
 		}
@@ -122,13 +142,17 @@ export class Block {
 
 	_render() {
 		this._elementId = this.props.dataId;
-		this._element.appendChild(this.render());
+
+		const child = this.render();
+
+		if (child !== null) this._element.appendChild(child);
+
 		this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 		this._addEventListeners();
 	}
 
 	// Может переопределять пользователь, необязательно трогать
-	render() {
+	render(): Element | null {
 		const container = document.createElement('div');
 		container.innerHTML = this._template(this.props);
 		return container.firstElementChild;
@@ -138,11 +162,11 @@ export class Block {
 		return this.element;
 	}
 
-	_makePropsProxy(props: Dictionary) {
+	_makePropsProxy(props: BlockProps) {
 		const self = this;
 
-		const propsProxy = new Proxy<Dictionary>(props, {
-			set(target: Dictionary, prop: string, value: any): boolean {
+		const propsProxy = new Proxy<BlockProps>(props, {
+			set(target: BlockProps, prop: string, value: any): boolean {
 				const old = self.props[prop];
 				target[prop] = value;
 
@@ -163,11 +187,13 @@ export class Block {
 
 	transformToString(): string {
 		const container = document.createElement('div');
+
 		container.appendChild(this.element);
+
 		return container.innerHTML;
 	}
 
-	_createDocumentElement(tagName) {
+	_createDocumentElement(tagName: string) {
 		// Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
 		return document.createElement(tagName);
 	}
@@ -207,11 +233,22 @@ export class Block {
 		});
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
 	show() {
 		this.getContent().style.display = 'block';
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
 	hide() {
 		this.getContent().style.display = 'none';
+	}
+
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	//@ts-ignore
+	remove() {
+		this._removeEventListeners();
+		this._element.remove();
 	}
 }

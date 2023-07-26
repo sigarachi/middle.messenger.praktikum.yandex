@@ -21,6 +21,8 @@ const loginInput = new Input(
 		placeholder: 'Логин',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (!validateField(event.target.value, userSettingsSchema.login))
 				console.error('Login validation error');
@@ -34,6 +36,8 @@ const passwordInput = new Input(
 		placeholder: 'Пароль',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (!validateField(event.target.value, passwordSettingsSchema.password))
 				console.error('Password validation error');
@@ -60,6 +64,8 @@ const authForm = new Form(
 		className: 'form-wrapper',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		submit: (event) => {
 			const formData = new FormData(event.target);
 

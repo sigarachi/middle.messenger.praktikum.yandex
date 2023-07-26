@@ -14,6 +14,8 @@ const messageInput = new Input(
 		placeholder: 'Введите сообщение',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		blur: (event) => {
 			if (!validateField(event.target.value, { notEmpty: true }))
 				console.error('Message validation error');
@@ -34,6 +36,8 @@ const chatForm = new Form(
 		dataId: 'chat-form',
 	},
 	{
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
 		submit: (event) => {
 			const formData = new FormData(event.target);
 
@@ -51,8 +55,12 @@ const chatForm = new Form(
 	}
 ).transformToString();
 
+interface IChatProps {
+	title?: string;
+}
+
 export class SelectedChat extends Block {
-	constructor(context, events = {}) {
+	constructor(context: IChatProps, events = {}) {
 		super('div', {
 			events,
 			content: chatForm,
