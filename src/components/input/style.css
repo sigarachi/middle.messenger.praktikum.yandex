@@ -13,3 +13,12 @@
     line-height: normal;
     flex-grow: 1;
 }
+
+.form-input-message {
+    width: 100%;
+    color: red;
+}
+
+.hidden {
+    display: none;
+}

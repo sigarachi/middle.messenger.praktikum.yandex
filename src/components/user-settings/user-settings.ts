@@ -6,7 +6,7 @@ import { Button } from '../button';
 import { Form } from '../form';
 import { settingsTemplate } from './settings.tmplt';
 import { passwordTemplate } from './password.tmplt';
-import { validate, validateField } from '../../lib';
+import { validateField, validateForm } from '../../lib';
 import {
 	passwordSettingsSchema,
 	userSettingsSchema,
@@ -24,13 +24,11 @@ const loginInput = new Input(
 		type: 'text',
 		name: 'login',
 		value: 'Тестовый',
+		errorText: 'Ошибка валидации логина',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, userSettingsSchema.login))
-				console.error('Login validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.login, { event });
 		},
 	}
 );
@@ -39,13 +37,11 @@ const secondNameInput = new Input(
 		type: 'text',
 		name: 'second_name',
 		value: 'Тестовый',
+		errorText: 'Ошибка валидации фамилии',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, userSettingsSchema.second_name))
-				console.error('Second Name validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.second_name, { event });
 		},
 	}
 );
@@ -54,13 +50,11 @@ const nameInput = new Input(
 		type: 'text',
 		name: 'first_name',
 		value: 'Тестовый',
+		errorText: 'Ошибка валидации имени',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, userSettingsSchema.first_name))
-				console.error('First name validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.first_name, { event });
 		},
 	}
 );
@@ -69,13 +63,11 @@ const phoneInput = new Input(
 		type: 'text',
 		name: 'phone',
 		value: 'Тестовый',
+		errorText: 'Ошибка валидации телефона',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, userSettingsSchema.phone))
-				console.error('Phone validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.phone, { event });
 		},
 	}
 );
@@ -84,13 +76,11 @@ const emailInput = new Input(
 		type: 'text',
 		name: 'email',
 		value: 'Тестовый',
+		errorText: 'Ошибка валидации почты',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, userSettingsSchema.email))
-				console.error('Email validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.email, { event });
 		},
 	}
 );
@@ -100,13 +90,7 @@ const displayNameInput = new Input(
 		name: 'display_name',
 		value: 'Тестовый',
 	},
-	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			validateField(event.target.value, {});
-		},
-	}
+	{}
 );
 
 const oldPasswordInput = new Input({
@@ -119,13 +103,11 @@ const newPassword = new Input(
 		type: 'password',
 		name: 'newPassword',
 		placeholder: 'Новый пароль',
+		errorText: 'Ошибка валидации пароля',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, passwordSettingsSchema.password))
-				console.error('Validation error');
+		blur: (event: Event) => {
+			validateField(passwordSettingsSchema.password, { event });
 		},
 	}
 );
@@ -134,13 +116,11 @@ const newPasswordAgain = new Input(
 		type: 'password',
 		name: 'newPasswordAgain',
 		placeholder: 'Новый пароль еще раз',
+		errorText: 'Ошибка валидации повторного ввода пароля',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, passwordSettingsSchema.password))
-				console.error('Validation error');
+		blur: (event: Event) => {
+			validateField(passwordSettingsSchema.password, { event });
 		},
 	}
 );
@@ -179,10 +159,9 @@ const settingsForm = new Form(
 		dataId: 'settings-form',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		submit: (event) => {
-			const formData = new FormData(event.target);
+		submit: (event: Event) => {
+			const form = event.target as HTMLFormElement;
+			const formData = new FormData(form);
 
 			const data = {
 				avatar: formData.get('avatar'),
@@ -194,8 +173,7 @@ const settingsForm = new Form(
 				display_name: formData.get('display_name'),
 			};
 
-			if (!validate(userSettingsSchema, data))
-				console.error('User settings validation error');
+			validateForm(form, userSettingsSchema);
 
 			console.log(Object.values(data));
 		},
@@ -220,31 +198,25 @@ const passwordSettings = new Form(
 		dataId: 'password-settings',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		submit: (event) => {
-			const formData = new FormData(event.target);
+		submit: (event: Event) => {
+			const form = event.target as HTMLFormElement;
+			const formData = new FormData(form);
 
 			const data = {
 				oldPassword: formData.get('oldPassword'),
 				newPassword: formData.get('newPassword'),
 				newPasswordAgain: formData.get('newPasswordAgain'),
 			};
+			const schema = {
+				newPassword: { ...passwordSettingsSchema.password },
+				newPasswordAgain: {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					//@ts-ignore
+					matches: data.newPassword.toString(),
+				},
+			};
 
-			if (
-				!validate(
-					{
-						newPassword: { ...passwordSettingsSchema.password },
-						newPasswordAgain: {
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							//@ts-ignore
-							matches: data.newPassword.toString(),
-						},
-					},
-					data
-				)
-			)
-				console.error('Password form validation error');
+			validateForm(form, schema);
 
 			console.log(Object.values(data));
 		},

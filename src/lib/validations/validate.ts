@@ -5,13 +5,26 @@ interface SchemaProps {
 	notEmpty?: boolean;
 }
 
+const showWarningMessage = (input: HTMLInputElement, isError: boolean) => {
+	const parent = input.parentNode || input.parentElement;
+	const messageElement = parent && parent.querySelector('.form-input-message');
+
+	if (messageElement) {
+		if (isError) {
+			messageElement.classList.remove('hidden');
+		} else {
+			messageElement.classList.add('hidden');
+		}
+	}
+};
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface SchemaInterface<T> {
+interface SchemaInterface {
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
-	[key: keyof typeof T]: SchemaProps;
+	[key: string]: SchemaProps;
 }
 
 function isLess(value: string | number, condition: number): boolean {
@@ -43,8 +56,14 @@ const checks = {
 	matches,
 };
 
+export function validateForm(form: HTMLFormElement, schema: SchemaInterface) {
+	const inputs = form.querySelectorAll('input');
+
+	inputs.forEach((input) => validateField(schema[input.name], { input }));
+}
+
 export function validate<T extends object>(
-	schema: SchemaInterface<T>,
+	schema: SchemaInterface,
 	data: T
 ): boolean {
 	try {
@@ -67,14 +86,16 @@ export function validate<T extends object>(
 	}
 }
 
-export function validateField<T>(field: T, schema: SchemaProps): boolean {
+export function validateField(
+	schema: SchemaProps,
+	data: { event?: Event; input?: HTMLInputElement }
+): boolean {
 	try {
+		const field = (data.event?.target as HTMLInputElement) || data.input;
 		Object.keys(schema).map((item) => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore
-			if (!checks[item](field, schema[item])) {
-				throw new Error();
-			}
+			showWarningMessage(field, !checks[item](field.value, schema[item]));
 		});
 		return true;
 	} catch (e) {

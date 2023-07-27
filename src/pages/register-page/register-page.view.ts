@@ -11,20 +11,18 @@ import { Form } from '../../components/form';
 import { registerFormTemplate } from './register-form.tmplt';
 import { Block } from '../../blocks';
 import { registerPageTemplate } from './register-page.tmplt';
-import { validate, validateField } from '../../lib';
+import { validateField, validateForm } from '../../lib';
 
 const loginInput = new Input(
 	{
 		type: 'text',
 		name: 'login',
 		placeholder: 'Логин',
+		errorText: 'Ошибка валидации логина',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (validateField(event.target.value, userSettingsSchema.login))
-				console.error('Login validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.login, { event });
 		},
 	}
 );
@@ -33,13 +31,11 @@ const firstNameInput = new Input(
 		type: 'text',
 		name: 'first_name',
 		placeholder: 'Имя',
+		errorText: 'Ошибка валидации имени',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (validateField(event.target.value, userSettingsSchema.first_name))
-				console.error('First name validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.first_name, { event });
 		},
 	}
 );
@@ -48,13 +44,11 @@ const secondNameInput = new Input(
 		type: 'text',
 		name: 'second_name',
 		placeholder: 'Фамилия',
+		errorText: 'Ошибка валидации фамилии',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (validateField(event.target.value, userSettingsSchema.second_name))
-				console.error('Second name validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.second_name, { event });
 		},
 	}
 );
@@ -62,14 +56,12 @@ const passwordInput = new Input(
 	{
 		type: 'password',
 		name: 'password',
-		placeholder: 'Логин',
+		placeholder: 'Пароль',
+		errorText: 'Ошибка валидации пароля',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (validateField(event.target.value, passwordSettingsSchema.password))
-				console.error('Password validation error');
+		blur: (event: Event) => {
+			validateField(passwordSettingsSchema.password, { event });
 		},
 	}
 );
@@ -78,13 +70,11 @@ const emailInput = new Input(
 		type: 'text',
 		name: 'email',
 		placeholder: 'Email',
+		errorText: 'Ошибка валидации почты',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (validateField(event.target.value, userSettingsSchema.email))
-				console.error('Email validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.email, { event });
 		},
 	}
 );
@@ -93,13 +83,11 @@ const phoneInput = new Input(
 		type: 'text',
 		name: 'phone',
 		placeholder: 'Телефон',
+		errorText: 'Ошибка валидации телефона',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (validateField(event.target.value, userSettingsSchema.phone))
-				console.error('Phone validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.phone, { event });
 		},
 	}
 );
@@ -129,10 +117,9 @@ const registerForm = new Form(
 		className: 'form-wrapper',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		submit: (event) => {
-			const formData = new FormData(event.target);
+		submit: (event: Event) => {
+			const form = event.target as HTMLFormElement;
+			const formData = new FormData(form);
 
 			const data = {
 				first_name: formData.get('first_name'),
@@ -143,8 +130,9 @@ const registerForm = new Form(
 				password: formData.get('password'),
 			};
 
-			if (!validate({ ...userSettingsSchema, ...passwordSettingsSchema }, data))
-				console.error('User settings validation error');
+			const schema = { ...userSettingsSchema, ...passwordSettingsSchema };
+
+			validateForm(form, schema);
 
 			console.log(Object.values(data));
 		},

@@ -12,20 +12,18 @@ import { Form } from '../../components/form';
 import { authPageTemplate, template } from './auth-page.tmplt';
 import { authFormTemplate } from './auth-form.tmplt';
 import { Block } from '../../blocks';
-import { validate, validateField } from '../../lib';
+import { validateField, validateForm } from '../../lib';
 
 const loginInput = new Input(
 	{
 		type: 'text',
 		name: 'login',
 		placeholder: 'Логин',
+		errorText: 'Ошибка валидации логина',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, userSettingsSchema.login))
-				console.error('Login validation error');
+		blur: (event: Event) => {
+			validateField(userSettingsSchema.login, { event });
 		},
 	}
 );
@@ -34,13 +32,11 @@ const passwordInput = new Input(
 		type: 'password',
 		name: 'password',
 		placeholder: 'Пароль',
+		errorText: 'Ошибка валидации пароля',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, passwordSettingsSchema.password))
-				console.error('Password validation error');
+		blur: (event: Event) => {
+			validateField(passwordSettingsSchema.password, { event });
 		},
 	}
 );
@@ -64,26 +60,16 @@ const authForm = new Form(
 		className: 'form-wrapper',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		submit: (event) => {
-			const formData = new FormData(event.target);
+		submit: (event: Event) => {
+			const form = event.target as HTMLFormElement;
+			const formData = new FormData(form);
 
-			const data = {
-				login: formData.get('login'),
-				password: formData.get('password'),
+			const schema = {
+				login: userSettingsSchema.login,
+				password: passwordSettingsSchema.password,
 			};
 
-			if (
-				!validate(
-					{
-						login: userSettingsSchema.login,
-						password: passwordSettingsSchema.password,
-					},
-					data
-				)
-			)
-				console.error('Form validation Error');
+			validateForm(form, schema);
 
 			console.log(Object.values(formData));
 		},

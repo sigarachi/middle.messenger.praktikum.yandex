@@ -5,20 +5,18 @@ import { Form } from '../form';
 import { chatFormTemplate } from './chat-form.tmplt';
 import { Block } from '../../blocks';
 import { selectedChatTemplate } from './selected-chat.tmplt';
-import { validate, validateField } from '../../lib';
+import { validateField, validateForm } from '../../lib';
 
 const messageInput = new Input(
 	{
 		type: 'text',
 		name: 'message',
 		placeholder: 'Введите сообщение',
+		errorText: 'Сообщение не может быть пустым',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		blur: (event) => {
-			if (!validateField(event.target.value, { notEmpty: true }))
-				console.error('Message validation error');
+		blur: (event: Event) => {
+			validateField({ notEmpty: true }, { event });
 		},
 	}
 );
@@ -36,19 +34,11 @@ const chatForm = new Form(
 		dataId: 'chat-form',
 	},
 	{
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
-		submit: (event) => {
-			const formData = new FormData(event.target);
+		submit: (event: Event) => {
+			const form = event.target as HTMLFormElement;
+			const formData = new FormData(form);
 
-			if (
-				!validate(
-					{ message: { notEmpty: true } },
-					{ message: formData.get('message') }
-				)
-			) {
-				console.error('Form validation error');
-			}
+			validateForm(form, { message: { notEmpty: true } });
 
 			console.log(Object.values(formData));
 		},
