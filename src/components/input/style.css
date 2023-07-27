@@ -1,17 +1,24 @@
-.form__input {
+.form-input {
     width: 260px;
     height: 30px;
     flex-shrink: 0;
     border-radius: 8px;
-    border: 2px solid rgba(115, 110, 110, 0.80);
+    border: 2px solid rgb(115 110 110 / 80%);
     background: #E5E4E4;
-
     color: #000;
     font-family: Montserrat, serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-
     flex-grow: 1;
+}
+
+.form-input-message {
+    width: 100%;
+    color: red;
+}
+
+.hidden {
+    display: none;
 }
