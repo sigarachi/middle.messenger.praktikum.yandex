@@ -1,1 +1,1 @@
-export const template = `<button class="button-wrapper {{className}}" type="{{type}}">{{text}}</button>`;
+export const template = `<button class="button-wrapper {{className}}" data-id="{{dataId}}" type="{{type}}">{{{text}}}</button>`;

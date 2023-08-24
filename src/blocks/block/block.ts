@@ -96,15 +96,15 @@ export class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
 	}
 
-	_componentDidMount(oldProps: BlockProps) {
-		this.componentDidMount(oldProps);
+	_componentDidMount() {
+		this.componentDidMount();
 	}
 
 	// Может переопределять пользователь, необязательно трогать
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	//@ts-ignore
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	componentDidMount(oldProps: BlockProps) {}
+	componentDidMount() {}
 
 	dispatchComponentDidMount() {}
 
@@ -202,6 +202,7 @@ export class Block {
 	private _triggerEvent(event: Event, func: Function) {
 		const target = event.target as HTMLElement;
 		const id = target.getAttribute('data-id');
+		console.log(id, this._elementId);
 
 		if (target && this._elementId === id) {
 			event.preventDefault();
