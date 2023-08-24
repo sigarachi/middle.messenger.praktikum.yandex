@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
 enum METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -9,6 +12,30 @@ type RequestOptions = {
 	method: keyof typeof METHODS;
 };
 
+export type FetchResponse = {
+	ok: boolean;
+	response?: string | object;
+};
+
+const handleFetchResponse = ({
+	response,
+	status,
+	statusText,
+}): FetchResponse => {
+	if (status === 200) {
+		return {
+			ok: true,
+			response: JSON.parse(response),
+		};
+	} else {
+		console.error(statusText);
+
+		return {
+			ok: false,
+		};
+	}
+};
+
 export type Options = {
 	headers?: Headers;
 	data?: any;
@@ -18,6 +45,8 @@ export type Options = {
 } & RequestOptions;
 
 export class Fetch {
+	constructor() {}
+
 	get(url: string, options: Options) {
 		return this.request(
 			url,
@@ -82,7 +111,8 @@ export class Fetch {
 			}
 
 			xhr.onload = () => {
-				resolve('');
+				const response = handleFetchResponse(xhr);
+				resolve(response);
 			};
 
 			xhr.onabort = reject;
@@ -92,7 +122,7 @@ export class Fetch {
 			if (method === METHODS.GET || !data) {
 				xhr.send();
 			} else {
-				xhr.send(data);
+				xhr.send(JSON.stringify(data));
 			}
 		});
 	}

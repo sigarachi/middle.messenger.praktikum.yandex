@@ -7,11 +7,16 @@ const template = `
 			{{{list}}}
 		</div>
 		<div class="right-size-wrapper">
-		{{#if settingsOpen}}
-			{{{settings}}}
+	    {{#if createFormOpen}}
+	        {{{createChatForm}}}
+        {{else if settingsOpen}}
+            {{{settings}}}
+        {{else if chatSettingsOpen}}
+            {{{chatSettings}}}
 		{{else}}
 			{{{chat}}}
-		{{/if}}
+	    {{/if}}
+	   
 		</div>
 	</div>
 `;

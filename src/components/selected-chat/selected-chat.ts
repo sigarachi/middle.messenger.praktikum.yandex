@@ -6,6 +6,7 @@ import { chatFormTemplate } from './chat-form.tmplt';
 import { Block } from '../../blocks';
 import { selectedChatTemplate } from './selected-chat.tmplt';
 import { validateField, validateForm } from '../../lib';
+import { IChat } from '../../services/chat-service/chat-service.interfaces';
 
 const messageInput = new Input(
 	{
@@ -47,6 +48,8 @@ const chatForm = new Form(
 
 interface IChatProps {
 	title?: string;
+	chat?: IChat;
+	chatSettingsButton?: string;
 }
 
 export class SelectedChat extends Block {

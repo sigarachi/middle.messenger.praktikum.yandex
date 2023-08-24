@@ -1,17 +1,25 @@
+import { router } from './src';
+import { ChatPage } from './src/pages/chat-page';
+import { AuthPage, RegisterPage } from './src';
 
-import {matchRoute} from './src'
+router
+	.use('/sign-up', RegisterPage)
+	.use('/settings', ChatPage, {
+		settingsOpen: true,
+		chatSettingsOpen: true,
+		createFormOpen: false,
+	})
+	.use('/create-chat', ChatPage, {
+		createFormOpen: true,
+		settingsOpen: false,
+		chatSettingsOpen: false,
+	})
+	.use('/chat-settings', ChatPage, {
+		createFormOpen: false,
+		settingsOpen: false,
+		chatSettingsOpen: true,
+	})
+	.use('/', AuthPage)
+	.use('/messenger', ChatPage, { settingsOpen: false });
 
-const contentMain = document.getElementById('app');
-
-function handleLocation() {
-    const pathName = window.location.pathname;
-    contentMain.innerHTML = "";
-    const htmlTemplate = matchRoute(pathName);
-    contentMain.innerHTML = htmlTemplate();
-}
-function init() {
-    window.addEventListener("popstate", handleLocation);
-    window.addEventListener("load", handleLocation);
-}
-
-init();
+router.start();

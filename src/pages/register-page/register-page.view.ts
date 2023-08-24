@@ -12,6 +12,8 @@ import { registerFormTemplate } from './register-form.tmplt';
 import { Block } from '../../blocks';
 import { registerPageTemplate } from './register-page.tmplt';
 import { validateField, validateForm } from '../../lib';
+import { AuthService } from '../../services';
+import { Store } from '../../lib/store';
 
 const loginInput = new Input(
 	{
@@ -97,7 +99,7 @@ const authButton = new Button({
 });
 const authLink = new Link({
 	text: 'Уже есть аккаунт?',
-	url: '/auth',
+	url: '/',
 });
 
 const registerFormContext = {
@@ -115,9 +117,11 @@ const registerForm = new Form(
 	{
 		content: registerFormTemplate(registerFormContext),
 		className: 'form-wrapper',
+		dataId: 'register-form',
 	},
 	{
 		submit: (event: Event) => {
+			event.preventDefault();
 			const form = event.target as HTMLFormElement;
 			const formData = new FormData(form);
 
@@ -134,7 +138,9 @@ const registerForm = new Form(
 
 			validateForm(form, schema);
 
-			console.log(Object.values(data));
+			AuthService.signUp(data).then((res) =>
+				Store.setStateAndPersist({ user: res.response })
+			);
 		},
 	}
 ).transformToString();

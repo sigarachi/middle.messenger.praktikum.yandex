@@ -13,6 +13,10 @@ import { authPageTemplate, template } from './auth-page.tmplt';
 import { authFormTemplate } from './auth-form.tmplt';
 import { Block } from '../../blocks';
 import { validateField, validateForm } from '../../lib';
+import { AuthService } from '../../services';
+import { Store } from '../../lib/store';
+import { UserController } from '../../controllers/user-controller/user-controller';
+import { ChatController } from '../../controllers/chat-controller/chat-controller';
 
 const loginInput = new Input(
 	{
@@ -43,7 +47,7 @@ const passwordInput = new Input(
 const authButton = new Button({ text: 'Авторизация' });
 const registerLink = new Link({
 	text: 'Нет аккаунта?',
-	url: '/register',
+	url: '/sign-up',
 });
 
 const authFormContext = {
@@ -69,9 +73,16 @@ const authForm = new Form(
 				password: passwordSettingsSchema.password,
 			};
 
+			const data = {
+				login: formData.get('login'),
+				password: formData.get('password'),
+			};
+
 			validateForm(form, schema);
 
-			console.log(Object.values(formData));
+			AuthService.signIn(data).then((res) =>
+				Store.setStateAndPersist({ user: res.response })
+			);
 		},
 	}
 ).transformToString();
@@ -83,6 +94,11 @@ export class AuthPage extends Block {
 			events,
 			template: authPageTemplate({ content: authForm }),
 		});
+	}
+
+	componentDidMount() {
+		UserController.getUser();
+		ChatController.getChats();
 	}
 }
 
