@@ -14,7 +14,7 @@ import { ChatController } from '../../controllers/chat-controller/chat-controlle
 import { ChatSettings } from '../../components/chat-settings/chat-settings';
 
 const list = new ChatList({
-	listData: Store.getState('chatList').chatList || [],
+	listData: Store.getState('chatList')?.chatList || [],
 }).transformToString();
 
 const chatSettingsButton = new Button(
@@ -28,8 +28,8 @@ const chatSettingsButton = new Button(
 ).transformToString();
 
 const chat = new SelectedChat({
-	title: Store.getState('currentChat').currentChat.title || '',
-	chat: Store.getState('currentChat').currentChat,
+	title: Store.getState('currentChat')?.currentChat?.title || '',
+	chat: Store.getState('currentChat')?.currentChat,
 	chatSettingsButton,
 }).transformToString();
 const settings = new UserSettings(
@@ -37,7 +37,7 @@ const settings = new UserSettings(
 	{}
 ).transformToString();
 const searchWrapper = new Search({
-	user: Store.getState('user').user.display_name,
+	user: Store.getState('user')?.user?.display_name || '',
 }).transformToString();
 
 const chatSettings = new ChatSettings({});
@@ -68,7 +68,9 @@ export class ChatPage extends Block {
 
 	componentDidMount() {
 		if (Store.getState('currentChat').currentChat) {
-			ChatController.getChatUsers(Store.getState('currentChat').currentChat.id);
+			ChatController.getChatUsers(
+				Store.getState('currentChat')?.currentChat?.id
+			);
 		}
 	}
 }
