@@ -7,8 +7,8 @@ export class Store {
 	public static getState(key: string) {
 		if (!Object.hasOwn(this.state, key)) {
 			const obj = {};
-			const item = localStorage.getItem(key);
-			if (item !== 'undefined') {
+			const item: string | null = localStorage.getItem(key);
+			if (item !== null && item !== 'undefined') {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				//@ts-ignore
 				obj[key] = JSON.parse(item);
