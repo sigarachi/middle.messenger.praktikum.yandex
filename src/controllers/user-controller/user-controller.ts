@@ -1,8 +1,6 @@
 import { UserService } from '../../services';
 import { Dictionary } from '../../blocks';
 import { Store } from '../../lib/store';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { FetchResponse } from '../../lib';
 import { router } from '../../utils';
 
 export class UserController {
@@ -15,7 +13,7 @@ export class UserController {
 		try {
 			await UserService.updateUserSettings(data);
 			await this.getUser();
-		} catch (e: FetchResponse) {
+		} catch (e: unknown) {
 			router.go('/fallback');
 			console.error(e);
 		}
@@ -27,7 +25,7 @@ export class UserController {
 			fd.append('avatar', data, `avatar.${data.type.split('/')[1]}`);
 			await UserService.updateUserAvatar(fd);
 			await this.getUser();
-		} catch (e: FetchResponse) {
+		} catch (e: unknown) {
 			router.go('/fallback');
 			console.error(e);
 		}
@@ -37,7 +35,7 @@ export class UserController {
 		try {
 			await UserService.updateUserPassword(data);
 			await this.getUser();
-		} catch (e: FetchResponse) {
+		} catch (e: unknown) {
 			router.go('/fallback');
 			console.error(e);
 		}
