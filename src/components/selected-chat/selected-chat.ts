@@ -37,11 +37,9 @@ const chatForm = new Form(
 	{
 		submit: (event: Event) => {
 			const form = event.target as HTMLFormElement;
-			const formData = new FormData(form);
+			//const formData = new FormData(form);
 
 			validateForm(form, { message: { notEmpty: true } });
-
-			console.log(Object.values(formData));
 		},
 	}
 ).transformToString();
