@@ -202,7 +202,6 @@ export class Block {
 	private _triggerEvent(event: Event, func: Function) {
 		const target = event.target as HTMLElement;
 		const id = target.getAttribute('data-id');
-		console.log(id, this._elementId);
 
 		if (target && this._elementId === id) {
 			event.preventDefault();

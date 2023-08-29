@@ -15,6 +15,7 @@ type RequestOptions = {
 export type FetchResponse = {
 	ok: boolean;
 	response?: string | object;
+	error?: string | object;
 };
 
 const handleFetchResponse = ({
@@ -32,6 +33,7 @@ const handleFetchResponse = ({
 
 		return {
 			ok: false,
+			error: JSON.parse(response),
 		};
 	}
 };
@@ -82,7 +84,6 @@ export class Fetch {
 	request(url: string, options: Options, timeout = 5000): Promise<any> {
 		const { method, headers: optionsHeaders, data } = options;
 		const headers = {
-			'content-type': 'application/json',
 			...optionsHeaders,
 		};
 
@@ -112,6 +113,7 @@ export class Fetch {
 
 			xhr.onload = () => {
 				const response = handleFetchResponse(xhr);
+				if (!response.ok) reject(response);
 				resolve(response);
 			};
 
@@ -121,6 +123,9 @@ export class Fetch {
 
 			if (method === METHODS.GET || !data) {
 				xhr.send();
+			} else if (data instanceof FormData) {
+				xhr.setRequestHeader('Content-Type', 'multipart/form-data');
+				xhr.send(data);
 			} else {
 				xhr.send(JSON.stringify(data));
 			}

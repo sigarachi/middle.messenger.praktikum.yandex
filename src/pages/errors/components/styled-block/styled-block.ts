@@ -6,7 +6,7 @@ const template = `
         <div class="block-container">
            <div class="block-header">{{header}}</div>
            <div class="block-description">{{description}}</div>
-           {{link}}
+           {{{link}}}
         </div>
     </div>
 `;
