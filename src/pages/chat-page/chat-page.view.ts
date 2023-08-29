@@ -70,7 +70,7 @@ export class ChatPage extends Block {
 			template: chatPageTemplate({
 				...chatPageContext,
 				...context,
-				showEmptyChat: Store.getState('currentChat').currentChat,
+				showEmptyChat: !Store.getState('currentChat').currentChat,
 			}),
 		});
 	}
