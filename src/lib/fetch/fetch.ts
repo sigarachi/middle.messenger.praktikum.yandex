@@ -122,11 +122,13 @@ export class Fetch {
 			xhr.ontimeout = reject;
 
 			if (method === METHODS.GET || !data) {
+				xhr.setRequestHeader('content-type', 'application/json');
 				xhr.send();
 			} else if (data instanceof FormData) {
 				xhr.setRequestHeader('Content-Type', 'multipart/form-data');
 				xhr.send(data);
 			} else {
+				xhr.setRequestHeader('content-type', 'application/json');
 				xhr.send(JSON.stringify(data));
 			}
 		});
