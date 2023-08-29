@@ -1,34 +1,34 @@
-import { UserService } from '../../services/user-service/user-service';
+import { UserService } from '../../services';
 import { Dictionary } from '../../blocks';
 import { Store } from '../../lib/store';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { FetchResponse } from '../../lib';
+import { router } from '../../utils';
 
 export class UserController {
 	static async getUser() {
-		try {
-			const { response } = await UserService.getCurrentUserInfo();
-			Store.setStateAndPersist({ user: response });
-		} catch (e) {
-			//window.location.href = '/fallback';
-			console.error(e);
-		}
+		const { response } = await UserService.getCurrentUserInfo();
+		Store.setStateAndPersist({ user: response });
 	}
 
 	static async updateUserInfo(data: Dictionary) {
 		try {
 			await UserService.updateUserSettings(data);
 			await this.getUser();
-		} catch (e) {
-			window.location.href = '/fallback';
+		} catch (e: FetchResponse) {
+			router.go('/fallback');
 			console.error(e);
 		}
 	}
 
-	static async updateUserAvatar(data: Dictionary) {
+	static async updateUserAvatar(data: File) {
 		try {
-			await UserService.updateUserAvatar(data);
+			const fd = new FormData();
+			fd.append('avatar', data, `avatar.${data.type.split('/')[1]}`);
+			await UserService.updateUserAvatar(fd);
 			await this.getUser();
-		} catch (e) {
-			window.location.href = '/fallback';
+		} catch (e: FetchResponse) {
+			router.go('/fallback');
 			console.error(e);
 		}
 	}
@@ -37,8 +37,8 @@ export class UserController {
 		try {
 			await UserService.updateUserPassword(data);
 			await this.getUser();
-		} catch (e) {
-			window.location.href = '/fallback';
+		} catch (e: FetchResponse) {
+			router.go('/fallback');
 			console.error(e);
 		}
 	}

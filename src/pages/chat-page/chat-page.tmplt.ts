@@ -11,6 +11,8 @@ const template = `
 	        {{{createChatForm}}}
         {{else if settingsOpen}}
             {{{settings}}}
+        {{else if showEmptyChat}}
+            {{{emptyChat}}}
         {{else if chatSettingsOpen}}
             {{{chatSettings}}}
 		{{else}}

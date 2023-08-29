@@ -7,3 +7,8 @@
     color: white;
     cursor: pointer;
 }
+
+.link {
+    width: fit-content;
+    text-decoration: #0500FF;
+}

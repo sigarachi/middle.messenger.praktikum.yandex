@@ -23,9 +23,9 @@ export class UserService {
 		return data;
 	}
 
-	static updateUserAvatar(args: Dictionary) {
+	static updateUserAvatar(args: FormData) {
 		const data = this.network.put(`${this.url}/user/profile/avatar`, {
-			method: 'POST',
+			method: 'PUT',
 			data: args,
 		});
 

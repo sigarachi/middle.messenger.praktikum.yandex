@@ -14,7 +14,7 @@ import {
 import { Block } from '../../blocks';
 import { IUserSettings } from './user-settings.interfaces';
 import { userSettingsTemplate } from './user-settings.tmplt';
-import { UserController } from '../../controllers/user-controller/user-controller';
+import { UserController } from '../../controllers';
 import { Store } from '../../lib/store';
 
 const { user } = Store.getState('user');
@@ -180,6 +180,7 @@ const settingsForm = new Form(
 			validateForm(form, userSettingsSchema);
 
 			UserController.updateUserInfo(data);
+			UserController.updateUserAvatar(formData.get('avatar') as File);
 		},
 	}
 );

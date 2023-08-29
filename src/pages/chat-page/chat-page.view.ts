@@ -12,6 +12,7 @@ import { Store } from '../../lib/store';
 import { createChatForm } from '../../components/create-chat-form';
 import { ChatController } from '../../controllers/chat-controller/chat-controller';
 import { ChatSettings } from '../../components/chat-settings/chat-settings';
+import { EmptyChat } from '../../components/empty-chat';
 
 const list = new ChatList({
 	listData: Store.getState('chatList')?.chatList || [],
@@ -42,11 +43,14 @@ const searchWrapper = new Search({
 
 const chatSettings = new ChatSettings({});
 
+const emptyChat = new EmptyChat();
+
 const chatPageContext = {
 	chat,
 	settings,
 	createChatForm: createChatForm.transformToString(),
 	chatSettings: chatSettings.transformToString(),
+	emptyChat: emptyChat.transformToString(),
 	searchWrapper,
 	list,
 };
@@ -55,6 +59,7 @@ interface ChatPageProps {
 	settingsOpen?: boolean;
 	createFormOpen?: boolean;
 	chatSettingsOpen?: boolean;
+	showEmptyChat?: boolean;
 }
 
 export class ChatPage extends Block {
@@ -62,7 +67,11 @@ export class ChatPage extends Block {
 		super('div', {
 			...context,
 			events,
-			template: chatPageTemplate({ ...chatPageContext, ...context }),
+			template: chatPageTemplate({
+				...chatPageContext,
+				...context,
+				showEmptyChat: Store.getState('currentChat').currentChat,
+			}),
 		});
 	}
 

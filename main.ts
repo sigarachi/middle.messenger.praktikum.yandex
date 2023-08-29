@@ -1,4 +1,4 @@
-import { router } from './src';
+import { FallbackPage, router } from './src';
 import { ChatPage } from './src/pages/chat-page';
 import { AuthPage, RegisterPage } from './src';
 
@@ -20,6 +20,7 @@ router
 		chatSettingsOpen: true,
 	})
 	.use('/', AuthPage)
+	.use('/fallback', FallbackPage)
 	.use('/messenger', ChatPage, { settingsOpen: false });
 
 router.start();

@@ -1,4 +1,4 @@
-import { AuthPage, pageError, RegisterPage } from '../pages';
+import { AuthPage, RegisterPage } from '../pages';
 import { pageNotFound } from '../pages';
 import { ChatPage } from '../pages/chat-page';
 
@@ -16,7 +16,6 @@ export const deprecated__routes = [
 		path: '/settings',
 		component: () => new ChatPage({ settingsOpen: true }).transformToString(),
 	},
-	{ path: '/fallback', component: () => pageError },
 ];
 
 export const matchRoute = (path = '') => {
