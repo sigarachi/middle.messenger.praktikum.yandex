@@ -1,6 +1,12 @@
 .chat-messages-wrapper {
     width: 100%;
     flex-grow: 1;
+    padding: 7px;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+    overflow: auto;
+    gap: 8px;
 }
 
 .chat-title-wrapper {

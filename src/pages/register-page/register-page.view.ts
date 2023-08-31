@@ -13,8 +13,8 @@ import { Block } from '../../blocks';
 import { registerPageTemplate } from './register-page.tmplt';
 import { validateField, validateForm } from '../../lib';
 import { AuthService } from '../../services';
-import { Store } from '../../lib/store';
 import { router } from '../../utils';
+import { UserController } from '../../controllers';
 
 const loginInput = new Input(
 	{
@@ -140,7 +140,11 @@ const registerForm = new Form(
 			validateForm(form, schema);
 
 			AuthService.signUp(data)
-				.then((res) => Store.setStateAndPersist({ user: res.response }))
+				.then(async () => {
+					await UserController.getUser();
+					//Store.setStateAndPersist({ user: res.response });
+					router.go('/messenger');
+				})
 				.catch((error) => {
 					if (error.error.reason === 'User already in system')
 						router.go('/messenger');

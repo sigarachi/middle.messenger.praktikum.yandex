@@ -24,17 +24,32 @@ const handleFetchResponse = ({
 	statusText,
 }): FetchResponse => {
 	if (status === 200) {
-		return {
-			ok: true,
-			response: JSON.parse(response),
-		};
+		try {
+			const data = JSON.parse(response);
+			return {
+				ok: true,
+				response: data,
+			};
+		} catch (e) {
+			return {
+				ok: true,
+				response: response,
+			};
+		}
 	} else {
 		console.error(statusText);
-
-		return {
-			ok: false,
-			error: JSON.parse(response),
-		};
+		try {
+			const error = JSON.parse(response);
+			return {
+				ok: false,
+				error,
+			};
+		} catch (e) {
+			return {
+				ok: false,
+				error: response,
+			};
+		}
 	}
 };
 
@@ -84,6 +99,7 @@ export class Fetch {
 	request(url: string, options: Options, timeout = 5000): Promise<any> {
 		const { method, headers: optionsHeaders, data } = options;
 		const headers = {
+			accept: 'application/json',
 			...optionsHeaders,
 		};
 
@@ -125,7 +141,6 @@ export class Fetch {
 				xhr.setRequestHeader('content-type', 'application/json');
 				xhr.send();
 			} else if (data instanceof FormData) {
-				xhr.setRequestHeader('Content-Type', 'multipart/form-data');
 				xhr.send(data);
 			} else {
 				xhr.setRequestHeader('content-type', 'application/json');

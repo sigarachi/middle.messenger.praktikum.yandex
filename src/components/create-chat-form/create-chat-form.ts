@@ -2,7 +2,8 @@ import { Input } from '../input';
 import { Form } from '../form';
 import { createFormTemplate } from './create-chat-form.tmplt';
 import { Button } from '../button';
-import { ChatController } from '../../controllers/chat-controller/chat-controller';
+import { ChatController } from '../../controllers/chat-controller';
+import { router } from '../../utils';
 
 const titleChatInput = new Input(
 	{
@@ -31,7 +32,7 @@ export const createChatForm = new Form(
 		className: 'chat-settings-wrapper',
 	},
 	{
-		submit: (event: Event) => {
+		submit: async (event: Event) => {
 			event.preventDefault();
 			const form = event.target as HTMLFormElement;
 			const formData = new FormData(form);
@@ -40,7 +41,8 @@ export const createChatForm = new Form(
 				title: formData.get('title'),
 			};
 
-			ChatController.createChat(data);
+			await ChatController.createChat(data);
+			router.go('/messenger');
 		},
 	}
 );

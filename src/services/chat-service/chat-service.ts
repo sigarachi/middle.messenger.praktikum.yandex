@@ -35,4 +35,13 @@ export class ChatService {
 	): Promise<{ ok: boolean; response: Dictionary }> {
 		return this.network.get(`${this.url}/${id}/users`, { method: 'GET' });
 	}
+
+	static async getChatToken(
+		id: string
+	): Promise<{ ok: boolean; response: Dictionary }> {
+		return this.network.post(`${this.url}/token/${id}`, {
+			method: 'POST',
+			data: {},
+		});
+	}
 }

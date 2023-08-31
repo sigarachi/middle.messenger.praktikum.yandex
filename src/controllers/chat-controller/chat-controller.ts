@@ -36,9 +36,19 @@ export class ChatController {
 		}
 	}
 
+	static async getChatToken(id: string) {
+		try {
+			const { response } = await ChatService.getChatToken(id);
+			Store.setStateAndPersist({ token: response.token });
+		} catch (e) {
+			Store.setStateAndPersist({ token: '' });
+		}
+	}
+
 	static async getChatUsers(id: string) {
 		try {
 			const { response } = await ChatService.getChatUsers(id);
+			await this.getChatToken(id);
 			Store.setStateAndPersist({ currentChatUsers: response });
 		} catch (e) {
 			Store.setStateAndPersist({ currentChat: {} });

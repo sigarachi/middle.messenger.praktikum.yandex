@@ -143,6 +143,7 @@ const userSettingsContext = {
 	emailInput: emailInput.transformToString(),
 	displayNameInput: displayNameInput.transformToString(),
 	saveInfoButton: saveInfoButton.transformToString(),
+	avatar: user?.avatar || '',
 };
 
 const settingsForm = new Form(
@@ -163,12 +164,11 @@ const settingsForm = new Form(
 		dataId: 'settings-form',
 	},
 	{
-		submit: (event: Event) => {
+		submit: async (event: Event) => {
 			const form = event.target as HTMLFormElement;
 			const formData = new FormData(form);
 
 			const data = {
-				avatar: formData.get('avatar'),
 				first_name: formData.get('first_name'),
 				second_name: formData.get('second_name'),
 				login: formData.get('login'),
@@ -179,8 +179,13 @@ const settingsForm = new Form(
 
 			validateForm(form, userSettingsSchema);
 
-			UserController.updateUserInfo(data);
-			UserController.updateUserAvatar(formData.get('avatar') as File);
+			await UserController.updateUserInfo(data);
+
+			if ((formData.get('avatar') as File).name.length) {
+				await UserController.updateUserAvatar(formData.get('avatar') as File);
+			}
+
+			window.location.reload();
 		},
 	}
 );
@@ -203,7 +208,7 @@ const passwordSettings = new Form(
 		dataId: 'password-settings',
 	},
 	{
-		submit: (event: Event) => {
+		submit: async (event: Event) => {
 			const form = event.target as HTMLFormElement;
 			const formData = new FormData(form);
 
@@ -223,7 +228,7 @@ const passwordSettings = new Form(
 
 			validateForm(form, schema);
 
-			UserController.updateUserPassword(data);
+			await UserController.updateUserPassword(data);
 		},
 	}
 );

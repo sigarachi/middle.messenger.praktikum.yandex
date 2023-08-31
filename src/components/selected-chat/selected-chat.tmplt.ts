@@ -10,7 +10,7 @@ const template = `
                 </p>
              {{{chatSettingsButton}}}
             </div>
-            <div class="chat-messages-wrapper">1</div>
+            <div class="chat-messages-wrapper"></div>
             {{{content}}}
         </div>
 `;
