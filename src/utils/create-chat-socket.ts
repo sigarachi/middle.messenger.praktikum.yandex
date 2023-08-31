@@ -16,12 +16,12 @@ export function createChatWebSocket(
 	const socket = new WebSocket(`${API_URL}chats/${userId}/${chatId}/${token}`);
 
 	socket.addEventListener('open', () => {
-		console.log('Соединение по WebSocket установлено');
+		//console.log('Соединение по WebSocket установлено');
 	});
 
 	socket.addEventListener('close', (event) => {
 		const { wasClean, code } = event;
-		let { reason } = event;
+		//let { reason } = event;
 
 		console.log(
 			wasClean
@@ -30,10 +30,10 @@ export function createChatWebSocket(
 		);
 
 		if (code === 1006) {
-			reason = 'Соединение закрыто из-за отсутствия активности в WebSocket';
+			//reason = 'Соединение закрыто из-за отсутствия активности в WebSocket';
 		}
 
-		console.log(`Код: ${code} | Причина: ${reason}`);
+		//console.log(`Код: ${code} | Причина: ${reason}`);
 	});
 
 	socket.addEventListener('message', (event) => {
