@@ -22,7 +22,7 @@ export class UserController {
 	static async updateUserAvatar(data: File) {
 		try {
 			const fd = new FormData();
-			fd.append('avatar', data, `avatar.${data.type.split('/')[1]}`);
+			fd.append('avatar', data, `${data.name}`);
 			await UserService.updateUserAvatar(fd);
 			await this.getUser();
 		} catch (e: unknown) {

@@ -41,6 +41,8 @@ const logoutButton = new Button(
 	{
 		click: async () => {
 			await AuthService.logout();
+			localStorage.clear();
+			router.go('/');
 		},
 	}
 );

@@ -14,7 +14,6 @@ import { authFormTemplate } from './auth-form.tmplt';
 import { Block } from '../../blocks';
 import { validateField, validateForm } from '../../lib';
 import { AuthService } from '../../services';
-import { Store } from '../../lib/store';
 import { UserController } from '../../controllers';
 import { ChatController } from '../../controllers/chat-controller';
 import { router } from '../../utils';
@@ -82,7 +81,10 @@ const authForm = new Form(
 			validateForm(form, schema);
 
 			AuthService.signIn(data)
-				.then((res) => Store.setStateAndPersist({ user: res.response }))
+				.then(async () => {
+					await UserController.getUser();
+					router.go('/messenger');
+				})
 				.catch((error) => {
 					if (error.error.reason === 'User already in system')
 						router.go('/messenger');

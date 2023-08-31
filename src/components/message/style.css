@@ -1,0 +1,16 @@
+.message {
+    width: 30%;
+    height: fit-content;
+    padding: 12px 24px;
+    border-radius: 8px;
+}
+
+.my {
+    color: white;
+    background-color: lightskyblue;
+}
+
+.not-my {
+    color: black;
+    background-color: lightblue;
+}
