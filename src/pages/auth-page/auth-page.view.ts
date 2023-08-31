@@ -81,9 +81,13 @@ const authForm = new Form(
 			validateForm(form, schema);
 
 			AuthService.signIn(data)
-				.then(async () => {
-					await UserController.getUser();
-					router.go('/messenger');
+				.then(() => {
+					UserController.getUser().then(() => {
+						ChatController.getChats().then(() => {
+							window.location.href = '/messenger';
+							//window.location.reload();
+						});
+					});
 				})
 				.catch((error) => {
 					if (error.error.reason === 'User already in system')

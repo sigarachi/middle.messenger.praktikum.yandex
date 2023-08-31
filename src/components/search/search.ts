@@ -7,6 +7,7 @@ import { Block } from '../../blocks';
 import { searchTemplate } from './search.tmplt';
 import { AuthService } from '../../services';
 import { router } from '../../utils';
+import { Store } from '../../lib/store';
 
 const searchInput = new Input({
 	type: 'text',
@@ -42,6 +43,7 @@ const logoutButton = new Button(
 		click: async () => {
 			await AuthService.logout();
 			localStorage.clear();
+			Store.clearStore();
 			router.go('/');
 		},
 	}
