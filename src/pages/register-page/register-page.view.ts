@@ -15,6 +15,7 @@ import { validateField, validateForm } from '../../lib';
 import { AuthService } from '../../services';
 import { router } from '../../utils';
 import { UserController } from '../../controllers';
+import { ChatController } from '../../controllers/chat-controller';
 
 const loginInput = new Input(
 	{
@@ -141,9 +142,12 @@ const registerForm = new Form(
 
 			AuthService.signUp(data)
 				.then(async () => {
-					await UserController.getUser();
-					//Store.setStateAndPersist({ user: res.response });
-					router.go('/messenger');
+					UserController.getUser().then(() => {
+						ChatController.getChats().then(() => {
+							window.location.href = '/messenger';
+							//window.location.reload();
+						});
+					});
 				})
 				.catch((error) => {
 					if (error.error.reason === 'User already in system')

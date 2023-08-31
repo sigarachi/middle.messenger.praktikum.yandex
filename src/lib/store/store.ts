@@ -22,6 +22,10 @@ export class Store {
 		Object.assign(this.state, newValue);
 	}
 
+	public static clearStore() {
+		this.state = {};
+	}
+
 	public static setStateAndPersist(
 		newValue: Dictionary,
 		withoutStringify?: boolean
