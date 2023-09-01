@@ -40,7 +40,11 @@ export function createChatWebSocket(
 		const { data } = event;
 
 		if (onMessageFunc && data) {
-			onMessageFunc(JSON.parse(data));
+			try {
+				onMessageFunc(JSON.parse(data));
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	});
 

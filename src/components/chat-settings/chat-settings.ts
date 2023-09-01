@@ -1,8 +1,8 @@
 import { Form } from '../form';
 import { Button } from '../button';
-import { ChatController } from '../../controllers/chat-controller/chat-controller';
+import { ChatController } from '../../controllers/chat-controller';
 import { chatSettingsTemplate } from './chat-settings.tmplt';
-import { UserList } from '../user-list/user-list';
+import { UserList } from '../user-list';
 import { Store } from '../../lib/store';
 import { Input } from '../input';
 import { addUserFormTemplate } from './add-user-form.tmplt';
@@ -36,7 +36,7 @@ const addUserFormContext = {
 const addUserForm = new Form(
 	{
 		content: addUserFormTemplate(addUserFormContext),
-		dataId: 'add-user-form',
+		dataId: 'add-user',
 		className: 'chat-settings-wrapper',
 	},
 	{
@@ -51,6 +51,7 @@ const addUserForm = new Form(
 			};
 
 			await ChatController.addUserToChat(data);
+			window.location.reload();
 		},
 	}
 ).transformToString();

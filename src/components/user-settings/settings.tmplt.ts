@@ -1,4 +1,5 @@
 import Handlebars from 'handlebars';
+import { BASE_API_URL } from '../../services/constants';
 
 const template = `
         <form>
@@ -7,7 +8,7 @@ const template = `
     			<h3>Аватар</h3>
     			<div>
     			<div class="list-item-avatar" data-id="{{dataId}}">
-    			    <img src="https://ya-praktikum.tech/api/v2/resources/{{this.avatar}}" alt="avatar" />
+    			    <img src="${BASE_API_URL}/resources/{{this.avatar}}" alt="avatar" />
                 </div>
    				{{{avatarInput}}}
                 </div>

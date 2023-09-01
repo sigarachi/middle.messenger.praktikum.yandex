@@ -1,11 +1,12 @@
 import { Fetch } from '../../lib';
+import { BASE_API_URL } from '../constants';
 
 export class ResourcesService {
-	static url = 'https://ya-praktikum.tech/api/v2/resources';
+	static url = '/resources';
 
-	static network = new Fetch();
+	static network = new Fetch(BASE_API_URL + this.url);
 
 	static async getImage(path: string) {
-		return this.network.get(`${this.url}/${path}`, { method: 'GET' });
+		return this.network.get(`/${path}`, { method: 'GET' });
 	}
 }

@@ -1,21 +1,22 @@
 import { Fetch } from '../../lib';
 import { Dictionary } from '../../blocks';
 import { IUser } from '../../components/user-settings/user-settings.interfaces';
+import { BASE_API_URL } from '../constants';
 
 export class UserService {
-	static url = 'https://ya-praktikum.tech/api/v2';
+	static url = '/';
 
-	static network = new Fetch();
+	static network = new Fetch(BASE_API_URL + this.url);
 
 	static getCurrentUserInfo(): Promise<{
 		ok: boolean;
 		response: IUser;
 	}> {
-		return this.network.get(`${this.url}/auth/user`, { method: 'GET' });
+		return this.network.get(`/auth/user`, { method: 'GET' });
 	}
 
 	static updateUserSettings(args: Dictionary) {
-		const data = this.network.put(`${this.url}/user/profile`, {
+		const data = this.network.put(`/user/profile`, {
 			method: 'POST',
 			data: args,
 		});
@@ -24,7 +25,7 @@ export class UserService {
 	}
 
 	static updateUserAvatar(args: FormData) {
-		const data = this.network.put(`${this.url}/user/profile/avatar`, {
+		const data = this.network.put(`/user/profile/avatar`, {
 			method: 'PUT',
 			data: args,
 		});
@@ -33,7 +34,7 @@ export class UserService {
 	}
 
 	static updateUserPassword(args: Dictionary) {
-		const data = this.network.put(`${this.url}/user/password`, {
+		const data = this.network.put(`/user/password`, {
 			method: 'POST',
 			data: args,
 		});

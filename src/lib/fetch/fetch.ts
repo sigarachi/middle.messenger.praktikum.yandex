@@ -62,7 +62,10 @@ export type Options = {
 } & RequestOptions;
 
 export class Fetch {
-	constructor() {}
+	url = '';
+	constructor(url: string) {
+		this.url = url;
+	}
 
 	get(url: string, options: Options) {
 		return this.request(
@@ -105,7 +108,7 @@ export class Fetch {
 
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
-			const urlObject = new URL(url);
+			const urlObject = new URL(this.url + url);
 
 			// set query params
 			if (method === METHODS.GET && data) {

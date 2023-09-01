@@ -5,7 +5,12 @@
 }
 
 .user-item {
+    height: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.user-item:hover {
+    cursor: pointer;
 }
