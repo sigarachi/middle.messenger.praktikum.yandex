@@ -21,7 +21,7 @@ export class ChatController {
 	static async addUserToChat(args: Dictionary) {
 		try {
 			await ChatService.addUserToChat(args);
-			await this.getChats();
+			await this.getChatUsers(args.chatId || '');
 		} catch (e) {
 			router.go('/fallback');
 		}
@@ -30,7 +30,7 @@ export class ChatController {
 	static async removeUserFromChat(args: Dictionary) {
 		try {
 			await ChatService.removeUserFromChat(args);
-			await this.getChats();
+			await this.getChatUsers(args.chatId || '');
 		} catch (e) {
 			router.go('/fallback');
 		}

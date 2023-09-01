@@ -1,13 +1,11 @@
 import Handlebars from 'handlebars';
 
 const template = `
-        <form data-id="{{dataId}}">
-            <div>
-                {{{addUserInput}}}
-                <br />
-                {{{createButton}}}
-            </div>
-        </form>
+        <div>
+            {{{addUserInput}}}
+            <br />
+            {{{createButton}}}
+        </div>
 `;
 
 export const addUserFormTemplate = Handlebars.compile(template);
