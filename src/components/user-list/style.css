@@ -1,0 +1,16 @@
+.user-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-item {
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-item:hover {
+    cursor: pointer;
+}

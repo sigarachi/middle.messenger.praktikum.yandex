@@ -3,6 +3,12 @@ const path = require('path');
 const PORT = 3000;
 const app = express();
 
+const { Server } = require("socket.io");
+const io = new Server();
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
 
 
 app.use(express.static(path.resolve(__dirname, 'dist'), {extensions: ["js"]}));

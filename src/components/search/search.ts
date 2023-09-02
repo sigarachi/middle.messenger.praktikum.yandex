@@ -5,6 +5,9 @@ import { Form } from '../form';
 import { searchFormTemplate } from './search-form.tmplt';
 import { Block } from '../../blocks';
 import { searchTemplate } from './search.tmplt';
+import { AuthService } from '../../services';
+import { router } from '../../utils';
+import { Store } from '../../lib/store';
 
 const searchInput = new Input({
 	type: 'text',
@@ -16,6 +19,35 @@ const searchButton = new Button({
 	text: 'Найти',
 	type: 'submit',
 });
+
+const settingsButton = new Button(
+	{
+		text: 'Настройки',
+		dataId: 'toSettingsButton',
+		className: 'link',
+	},
+	{
+		click: () => {
+			router.go('/settings');
+		},
+	}
+);
+
+const logoutButton = new Button(
+	{
+		text: 'Выйти',
+		dataId: 'logoutButton',
+		className: 'link',
+	},
+	{
+		click: async () => {
+			await AuthService.logout();
+			localStorage.clear();
+			Store.clearStore();
+			router.go('/');
+		},
+	}
+);
 
 const searchFormContext = {
 	searchInput: searchInput.transformToString(),
@@ -32,9 +64,7 @@ const searchForm = new Form(
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		//@ts-ignore
 		submit: (event) => {
-			const formData = new FormData(event.target);
-
-			console.log(Object.values(formData));
+			new FormData(event.target);
 		},
 	}
 ).transformToString();
@@ -47,7 +77,12 @@ export class Search extends Block {
 	constructor(context: ISearchProps, events = {}) {
 		super('div', {
 			events,
-			template: searchTemplate({ ...context, searchForm: searchForm }),
+			template: searchTemplate({
+				...context,
+				searchForm: searchForm,
+				logoutButton: logoutButton.transformToString(),
+				settingsButton: settingsButton.transformToString(),
+			}),
 		});
 	}
 }

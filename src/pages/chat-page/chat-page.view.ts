@@ -1,43 +1,73 @@
 import './styles.css';
-import { chatList, Search, SelectedChat, UserSettings } from '../../components';
+import {
+	Button,
+	ChatList,
+	Search,
+	SelectedChat,
+	UserSettings,
+} from '../../components';
 import { Block } from '../../blocks';
 import { chatPageTemplate } from './chat-page.tmplt';
+import { Store } from '../../lib/store';
+import { createChatForm } from '../../components/create-chat-form';
+import { ChatController } from '../../controllers/chat-controller';
+import { ChatSettings } from '../../components/chat-settings';
+import { EmptyChat } from '../../components/empty-chat';
 
-const list = chatList({
-	listData: [
+const getTemplate = (context = {}): string => {
+	const list = new ChatList({
+		listData: Store.getState('chatList')?.chatList || [],
+	}).transformToString();
+
+	const chatSettingsButton = new Button(
 		{
-			title: 'Антон',
-			description: 'Я тут новую фичу нашел',
+			text: 'Настройки',
+			dataId: 'chat-settings-relocate',
 		},
 		{
-			title: 'Антон',
-			description: 'Я тут новую фичу нашел',
-		},
-		{
-			title: 'Антон',
-			description: 'Я тут новую фичу нашел',
-		},
-	],
-});
+			click: () => (window.location.href = '/chat-settings'),
+		}
+	).transformToString();
 
-const chat = new SelectedChat({ title: 'Чат' }).transformToString();
-const settings = new UserSettings(
-	{ title: 'Редактирование профиля' },
-	{}
-).transformToString();
-const searchWrapper = new Search({
-	user: 'Тестовый пользователь',
-}).transformToString();
+	const chat = new SelectedChat({
+		title: Store.getState('currentChat')?.currentChat?.title || '',
+		chat: Store.getState('currentChat')?.currentChat,
+		chatSettingsButton,
+	}).transformToString();
+	const settings = new UserSettings(
+		{ title: 'Редактирование профиля' },
+		{}
+	).transformToString();
+	const searchWrapper = new Search({
+		user: Store.getState('user')?.user?.display_name || '',
+	}).transformToString();
 
-const chatPageContext = {
-	chat,
-	settings,
-	searchWrapper,
-	list,
+	const chatSettings = new ChatSettings({});
+
+	const emptyChat = new EmptyChat();
+
+	const chatPageContext = {
+		chat,
+		settings,
+		createChatForm: createChatForm.transformToString(),
+		chatSettings: chatSettings.transformToString(),
+		emptyChat: emptyChat.transformToString(),
+		searchWrapper,
+		list,
+	};
+
+	return chatPageTemplate({
+		...chatPageContext,
+		...context,
+		showEmptyChat: !Store.getState('currentChat').currentChat,
+	});
 };
 
 interface ChatPageProps {
 	settingsOpen?: boolean;
+	createFormOpen?: boolean;
+	chatSettingsOpen?: boolean;
+	showEmptyChat?: boolean;
 }
 
 export class ChatPage extends Block {
@@ -45,7 +75,15 @@ export class ChatPage extends Block {
 		super('div', {
 			...context,
 			events,
-			template: chatPageTemplate({ ...chatPageContext, ...context }),
+			template: getTemplate(context),
 		});
+	}
+
+	componentDidMount() {
+		if (Store.getState('currentChat').currentChat) {
+			ChatController.getChatUsers(
+				Store.getState('currentChat')?.currentChat?.id
+			);
+		}
 	}
 }

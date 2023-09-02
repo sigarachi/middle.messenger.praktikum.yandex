@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-nocheck
+
 enum METHODS {
 	GET = 'GET',
 	POST = 'POST',
@@ -9,6 +12,47 @@ type RequestOptions = {
 	method: keyof typeof METHODS;
 };
 
+export type FetchResponse = {
+	ok: boolean;
+	response?: string | object;
+	error?: string | object;
+};
+
+const handleFetchResponse = ({
+	response,
+	status,
+	statusText,
+}): FetchResponse => {
+	if (status === 200) {
+		try {
+			const data = JSON.parse(response);
+			return {
+				ok: true,
+				response: data,
+			};
+		} catch (e) {
+			return {
+				ok: true,
+				response: response,
+			};
+		}
+	} else {
+		console.error(statusText);
+		try {
+			const error = JSON.parse(response);
+			return {
+				ok: false,
+				error,
+			};
+		} catch (e) {
+			return {
+				ok: false,
+				error: response,
+			};
+		}
+	}
+};
+
 export type Options = {
 	headers?: Headers;
 	data?: any;
@@ -18,6 +62,11 @@ export type Options = {
 } & RequestOptions;
 
 export class Fetch {
+	url = '';
+	constructor(url: string) {
+		this.url = url;
+	}
+
 	get(url: string, options: Options) {
 		return this.request(
 			url,
@@ -53,13 +102,13 @@ export class Fetch {
 	request(url: string, options: Options, timeout = 5000): Promise<any> {
 		const { method, headers: optionsHeaders, data } = options;
 		const headers = {
-			'content-type': 'application/json',
+			accept: 'application/json',
 			...optionsHeaders,
 		};
 
 		return new Promise((resolve, reject) => {
 			const xhr = new XMLHttpRequest();
-			const urlObject = new URL(url);
+			const urlObject = new URL(this.url + url);
 
 			// set query params
 			if (method === METHODS.GET && data) {
@@ -82,7 +131,9 @@ export class Fetch {
 			}
 
 			xhr.onload = () => {
-				resolve('');
+				const response = handleFetchResponse(xhr);
+				if (!response.ok) reject(response);
+				resolve(response);
 			};
 
 			xhr.onabort = reject;
@@ -90,9 +141,13 @@ export class Fetch {
 			xhr.ontimeout = reject;
 
 			if (method === METHODS.GET || !data) {
+				xhr.setRequestHeader('content-type', 'application/json');
 				xhr.send();
-			} else {
+			} else if (data instanceof FormData) {
 				xhr.send(data);
+			} else {
+				xhr.setRequestHeader('content-type', 'application/json');
+				xhr.send(JSON.stringify(data));
 			}
 		});
 	}

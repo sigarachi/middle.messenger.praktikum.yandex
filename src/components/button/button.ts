@@ -3,7 +3,7 @@ import { Block } from '../../blocks';
 import { template } from './button.tmplt';
 import { IButton } from './button.interfaces';
 
-const createClassName = (className: string = '') => {
+const createClassName = (className: string = 'button-wrapper') => {
 	return `button ${className}`;
 };
 

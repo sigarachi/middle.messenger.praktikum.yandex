@@ -14,6 +14,10 @@ import {
 import { Block } from '../../blocks';
 import { IUserSettings } from './user-settings.interfaces';
 import { userSettingsTemplate } from './user-settings.tmplt';
+import { UserController } from '../../controllers';
+import { Store } from '../../lib/store';
+
+const { user } = Store.getState('user');
 
 const avatarInput = new Input({
 	type: 'file',
@@ -23,7 +27,7 @@ const loginInput = new Input(
 	{
 		type: 'text',
 		name: 'login',
-		value: 'Тестовый',
+		value: user?.login || '',
 		errorText: 'Ошибка валидации логина',
 	},
 	{
@@ -36,7 +40,7 @@ const secondNameInput = new Input(
 	{
 		type: 'text',
 		name: 'second_name',
-		value: 'Тестовый',
+		value: user?.second_name || '',
 		errorText: 'Ошибка валидации фамилии',
 	},
 	{
@@ -49,7 +53,7 @@ const nameInput = new Input(
 	{
 		type: 'text',
 		name: 'first_name',
-		value: 'Тестовый',
+		value: user?.first_name || '',
 		errorText: 'Ошибка валидации имени',
 	},
 	{
@@ -62,7 +66,7 @@ const phoneInput = new Input(
 	{
 		type: 'text',
 		name: 'phone',
-		value: 'Тестовый',
+		value: user?.phone || '',
 		errorText: 'Ошибка валидации телефона',
 	},
 	{
@@ -75,7 +79,7 @@ const emailInput = new Input(
 	{
 		type: 'text',
 		name: 'email',
-		value: 'Тестовый',
+		value: user?.email || '',
 		errorText: 'Ошибка валидации почты',
 	},
 	{
@@ -88,7 +92,7 @@ const displayNameInput = new Input(
 	{
 		type: 'text',
 		name: 'display_name',
-		value: 'Тестовый',
+		value: user?.display_name || '',
 	},
 	{}
 );
@@ -139,6 +143,7 @@ const userSettingsContext = {
 	emailInput: emailInput.transformToString(),
 	displayNameInput: displayNameInput.transformToString(),
 	saveInfoButton: saveInfoButton.transformToString(),
+	avatar: user?.avatar || '',
 };
 
 const settingsForm = new Form(
@@ -159,12 +164,11 @@ const settingsForm = new Form(
 		dataId: 'settings-form',
 	},
 	{
-		submit: (event: Event) => {
+		submit: async (event: Event) => {
 			const form = event.target as HTMLFormElement;
 			const formData = new FormData(form);
 
 			const data = {
-				avatar: formData.get('avatar'),
 				first_name: formData.get('first_name'),
 				second_name: formData.get('second_name'),
 				login: formData.get('login'),
@@ -175,7 +179,13 @@ const settingsForm = new Form(
 
 			validateForm(form, userSettingsSchema);
 
-			console.log(Object.values(data));
+			await UserController.updateUserInfo(data);
+
+			if ((formData.get('avatar') as File).name.length) {
+				await UserController.updateUserAvatar(formData.get('avatar') as File);
+			}
+
+			window.location.reload();
 		},
 	}
 );
@@ -198,7 +208,7 @@ const passwordSettings = new Form(
 		dataId: 'password-settings',
 	},
 	{
-		submit: (event: Event) => {
+		submit: async (event: Event) => {
 			const form = event.target as HTMLFormElement;
 			const formData = new FormData(form);
 
@@ -218,7 +228,7 @@ const passwordSettings = new Form(
 
 			validateForm(form, schema);
 
-			console.log(Object.values(data));
+			await UserController.updateUserPassword(data);
 		},
 	}
 );
