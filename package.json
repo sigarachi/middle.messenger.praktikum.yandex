@@ -51,5 +51,9 @@
     "handlebars": "^4.7.7",
     "socket.io": "^4.7.2",
     "vite-plugin-handlebars": "^1.6.0"
+  },
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.scss": "stylelint --fix"
   }
 }
