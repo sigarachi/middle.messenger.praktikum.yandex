@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import { Input } from '../input';
 import { Button } from '../button';
 import { Form } from '../form';

@@ -1,5 +1,5 @@
 import Handlebars from 'handlebars';
-import './styles.css';
+import './styles.scss';
 
 const template = `
     <form class="form-wrapper">

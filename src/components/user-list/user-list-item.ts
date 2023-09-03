@@ -1,6 +1,6 @@
 import { Block } from '../../blocks';
 import { userListItemTemplate } from './user-list-item.tmplt';
-import './style.css';
+import './style.scss';
 
 export class UserListItem extends Block {
 	constructor(context = {}, events = {}) {

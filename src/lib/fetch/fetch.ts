@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-nocheck
 
-enum METHODS {
+export enum METHODS {
 	GET = 'GET',
 	POST = 'POST',
 	PUT = 'PUT',
