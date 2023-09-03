@@ -1,0 +1,3 @@
+/src/**/*.tmpl.*
+/src/**/*.min.*
+/src/**/*.spec.*

@@ -136,6 +136,10 @@ export class Block {
 		this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
 	};
 
+	getProps() {
+		return this.props;
+	}
+
 	get element() {
 		return this._element;
 	}

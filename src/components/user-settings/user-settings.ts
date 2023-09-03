@@ -1,5 +1,5 @@
-import './styles.css';
-import '../selected-chat/styles.css';
+import './styles.scss';
+import '../selected-chat/styles.scss';
 import Handlebars from 'handlebars';
 import { Input } from '../input';
 import { Button } from '../button';

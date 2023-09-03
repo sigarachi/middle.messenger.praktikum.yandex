@@ -1,0 +1,9 @@
+{
+  "extension": ["ts", "scss"],
+  "spec": "src/**/*.spec.ts",
+  "require": "mocha-suppress-logs",
+  "node-option": [
+    "experimental-specifier-resolution=node",
+    "loader=ts-node/esm"
+  ]
+}

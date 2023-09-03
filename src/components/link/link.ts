@@ -1,4 +1,4 @@
-import './style.css';
+import './style.scss';
 import { template } from './link.tmplt';
 import { Block } from '../../blocks';
 import { ILinkProps } from './link.interfaces';

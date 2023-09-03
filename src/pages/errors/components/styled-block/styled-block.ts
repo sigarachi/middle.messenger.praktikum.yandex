@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import Handlebars from 'handlebars';
 
 const template = `

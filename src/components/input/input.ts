@@ -1,4 +1,4 @@
-import './style.css';
+import './style.scss';
 import { template } from './input.tmplt';
 import { Block } from '../../blocks';
 import { IInputProps } from './input.interfaces';

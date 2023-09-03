@@ -18,5 +18,8 @@
     "strictNullChecks": true,
     "skipLibCheck": true
   },
+  "exclude": [
+    "./src/**/*.spec.ts"
+  ],
   "include": ["src"]
 }

@@ -5,8 +5,8 @@ import {
 	passwordSettingsSchema,
 	userSettingsSchema,
 } from '../../components';
-import './styles.css';
-import '../../utils/utils.css';
+import './styles.scss';
+import '../../utils/utils.scss';
 import { Form } from '../../components/form';
 import { registerFormTemplate } from './register-form.tmplt';
 import { Block } from '../../blocks';

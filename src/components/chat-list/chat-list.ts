@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 import { Block, Dictionary } from '../../blocks';
 import { chatListTemplate } from './chat-list.tmplt';
 import { IChat } from '../../services/chat-service/chat-service.interfaces';
